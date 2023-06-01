@@ -1,0 +1,62 @@
+{% extends 'index/seat.html' %}
+{% block seat %}
+    {% if msg %}
+    alert("{{ msg }}");
+    {% endif %}
+    {% if seat_list %}
+
+
+        <form action="{% url 'seat' room_id %}" class="m-1 mb-5" method="post">
+            <div class="accordion-item border-0">
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+
+                        <input type="text" name="room" value="{{ room_id }}">
+                        <input type="text" name="day" value="{{ day_selected }}">
+
+
+                    </div>
+                </div>
+
+                <h5 class="m-2 mt-5 text-center">请选择座位号：（
+                    {{ room_select }}&emsp;&emsp13;
+
+                    {% if day_selected == 1 %}
+                        今天&emsp;&emsp13;
+                    {% elif day_selected == 2 %}
+                        明天&emsp;&emsp13;
+                    {% endif %}
+
+                    )</h5>
+
+                {% csrf_token %}
+                <div class="col-12">
+                    <div class="row">
+                        {% for seat in seat_list %}
+                            <div class="col-1">
+                                <input value="{{ seat.seat_id }}" type="radio" class="btn-check" name="seat_id"
+                                       id="success-outlined-{{ seat.seat_id }}"
+                                       autocomplete="off">
+                                <label class="btn btn-outline-success m-1 w-100 h-85"
+                                       for="success-outlined-{{ seat.seat_id }}">{{ seat.seat_id }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+
+                </div>
+
+                <h5 class="m-2 mt-5 text-center">请选择预定时间：（
+                    {{ room_select }}&emsp;&emsp13;
+                    )</h5>
+                <div>
+                    {{ time_form.as_p }}
+                </div>
+                <div class="text-end mt-3 ">
+                    <input class="btn-lg btn-primary w-25 m-auto" type="submit" value="确定预约">
+                </div>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}

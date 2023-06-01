@@ -1,0 +1,83 @@
+{% extends 'index/base.html' %}
+{% block title %}
+    预约记录
+{% endblock %}
+{% block recording_active %}
+    active
+{% endblock %}
+{% block index %}
+
+    <main class="container">
+        <div class="row">
+
+            {% for reservation_obj in reservation_list %}
+                <div class="col-3 mt-3 ">
+                    <div class="p-4 rounded mt-3 h-100 {% if i.time.day == day %} bg-warning {% else %} bg-light {% endif %} ">
+                        <h5>创建时间： {{ reservation_obj.create_time }}</h5>
+                        <h5>开始时间： {{ reservation_obj.start_time }}</h5>
+                        <h5>结束时间： {{ reservation_obj.end_time }}</h5>
+
+                        <h5>自习室：{{ reservation_obj.seat.room.name }}</h5>
+                        <h5>座位号：{{ reservation_obj.seat.seat_id }}</h5>
+                        <h5>状态：{{ reservation_obj.status }}</h5>
+                        <p class="lead text-center">请保持良好的学习环境！</p>
+                        <p class="text-center">
+                            {% if reservation_obj.status == '1' %}
+                                <a type="button" class="btn btn-outline-success" data-bs-toggle="modal"
+                                   data-bs-target="#exampleModal-{{ i.id }}">取消预约</a>
+
+
+
+                                <!-- Button trigger modal -->
+
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal-{{ i.id }}" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">请确认一下信息！</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="h5">你确定取消吗？</p>
+                                                <p>开始时间： {{ reservation_obj.start_time }}</p>
+                                                <p>结束时间： {{ reservation_obj.end_time }}</p>
+                                                <p>自习室：{{ reservation_obj.seat.room.name }}</p>
+                                                <p>座位号：{{ reservation_obj.seat.seat_id }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    取消
+                                                </button>
+                                                <a href="{% url 'recording' %}?id={{ reservation_obj.id }}"
+                                                   class="btn btn-danger">确定</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% else %}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            {% empty %}
+                <main class="container">
+                    <div class="bg-light p-5 rounded mt-3">
+                        <h1>你没有预约记录！！</h1>
+                        <p class="lead">请保持良好的学习环境！</p>
+
+                    </div>
+                </main>
+            {% endfor %}
+
+
+        </div>
+    </main>
+
+
+{% endblock %}
